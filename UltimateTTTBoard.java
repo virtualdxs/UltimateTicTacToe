@@ -5,7 +5,7 @@ import util.Terminal;
 public class UltimateTTTBoard {
     // 2D TTTBoard array representing the full board
     private TTTBoard[][] boardArray = new TTTBoard[3][3];
-    //TTTBoard representing won boards (corresponds to boardArrayl.ft )
+    //TTTBoard representing won boards (corresponds to boardArray. )
     private TTTBoard board = new TTTBoard();
     // int representation of current board, 0-8
     /*
@@ -19,6 +19,7 @@ public class UltimateTTTBoard {
 
     public UltimateTTTBoard() {
         super();
+        // Initialize boardArray to all empty boards
         for (int i=0;i<3;i++) {
             for (int j=0;j<3;j++) {
                 boardArray[i][j] = new TTTBoard();
@@ -27,14 +28,16 @@ public class UltimateTTTBoard {
     }
 
     public void move(char player, int location) throws LocationTakenException, TargetBoardFullException {
-        System.out.println(focus);
         TTTBoard smallBoard = boardArray[focus/3][focus%3];
         smallBoard.move(player,location);
-        if (smallBoard.gameOver()) {
-            boardArray[focus/3][focus%3] = new TTTBoard(smallBoard.getWinner());
-            board.move(smallBoard.getWinner(),focus);
+        if (smallBoard.getWinner() != '!') {
+            try {
+                board.move(smallBoard.getWinner(),focus);
+            } catch (LocationTakenException e) {
+                return;
+            }
         }
-        if (boardArray[location/3][location%3].gameOver()) {
+        if (boardArray[location/3][location%3].isFull()) {
             throw new TargetBoardFullException(location);
         }
         focus = location;
@@ -139,7 +142,7 @@ public class UltimateTTTBoard {
                 System.out.println("Current board is "+(board.focus+1));
             } catch (LocationTakenException e) {
                 Terminal.clear();
-                System.out.println(e);
+                System.out.println("Location " + e.getLocation() + " on board " + (board.focus+1) + " is taken. Please choose another location.");
             } catch (IllegalArgumentException e) {
                 Terminal.clear();
                 System.out.println("Just what do you think you're doing, Dave?");

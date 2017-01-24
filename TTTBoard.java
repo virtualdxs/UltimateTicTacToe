@@ -72,18 +72,21 @@ public class TTTBoard {
         return '!';
     }
 
-    public boolean gameOver() {
-        boolean over = true;
+    public boolean isFull() {
+        boolean full = true;
         for (char[] r:board) {
             for (char c:r){
                 if (c==' ') {
-                    over = false;
+                    full = false;
                     break;
                 }
             }
         }
-        if(over) return true;
-        else return getWinner() != '!';
+        return full;
+    }
+
+    public boolean gameOver() {
+        return getWinner() != '!' || isFull();
     }
 
     public static void main(String[] args) {
