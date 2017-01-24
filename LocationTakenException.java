@@ -9,6 +9,6 @@ public class LocationTakenException extends Exception {
         return location;
     }
     public String toString() {
-        return "Location "+getLocation()+" on is taken. Please choose another location.";
+        return "Location "+getLocation()+" is taken. Please choose another location.";
     }
 }
